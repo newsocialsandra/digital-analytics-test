@@ -47,10 +47,30 @@ h1 {
   background: #45a049;
 }
 
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.filters button {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #eee;
+}
+
+.filters button.active {
+  background: #4CAF50;
+  color: white;
+}
+
 ul {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 li {

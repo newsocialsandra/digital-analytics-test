@@ -2,15 +2,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("addBtn");
   const taskInput = document.getElementById("taskInput");
   const taskList = document.getElementById("taskList");
+  const filterBtns = document.querySelectorAll(".filters button");
 
   // Ladda sparade uppgifter
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let currentFilter = "all";
   renderTasks();
 
   // Lägg till uppgift
   addBtn.addEventListener("click", addTask);
   taskInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") addTask();
+  });
+
+  // Filter-knappar
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentFilter = btn.dataset.filter;
+      renderTasks();
+    });
   });
 
   function addTask() {
@@ -32,7 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderTasks() {
     taskList.innerHTML = "";
-    tasks.forEach((task, index) => {
+
+    let filteredTasks = tasks;
+    if (currentFilter === "active") {
+      filteredTasks = tasks.filter(t => !t.completed);
+    } else if (currentFilter === "completed") {
+      filteredTasks = tasks.filter(t => t.completed);
+    }
+
+    filteredTasks.forEach((task, index) => {
       const li = document.createElement("li");
       if (task.completed) li.classList.add("completed");
 
@@ -60,7 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteBtn.textContent = "✖";
       deleteBtn.classList.add("delete");
       deleteBtn.addEventListener("click", () => {
-        tasks.splice(index, 1);
+        const taskIndex = tasks.indexOf(task);
+        tasks.splice(taskIndex, 1);
         saveTasks();
         renderTasks();
       });

@@ -8,11 +8,17 @@
 </head>
 <body>
   <div class="container">
-    <h1>📝 Min Att göra-lista</h1>
+    <h1>📝 Att göra-lista</h1>
     
     <div class="input-area">
       <input type="text" id="taskInput" placeholder="Skriv en uppgift...">
       <button id="addBtn">Lägg till</button>
+    </div>
+
+    <div class="filters">
+      <button data-filter="all" class="active">Alla</button>
+      <button data-filter="active">Aktiva</button>
+      <button data-filter="completed">Klara</button>
     </div>
     
     <ul id="taskList"></ul>
