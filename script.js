@@ -1,63 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("addBtn");
-  const placeInput = document.getElementById("placeInput");
-  const commentInput = document.getElementById("commentInput");
-  const tipList = document.getElementById("tipList");
+  const taskInput = document.getElementById("taskInput");
+  const taskList = document.getElementById("taskList");
+  const filterBtns = document.querySelectorAll(".filters button");
 
-  // Ladda sparade tips
-  let tips = JSON.parse(localStorage.getItem("tips")) || [];
-  renderTips();
+  // Ladda sparade uppgifter
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let currentFilter = "all";
+  renderTasks();
 
-  // Lägg till tips
-  addBtn.addEventListener("click", addTip);
-  commentInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") addTip();
+  // Lägg till uppgift
+  addBtn.addEventListener("click", addTask);
+  taskInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") addTask();
   });
 
-  function addTip() {
-    const place = placeInput.value.trim();
-    const comment = commentInput.value.trim();
-    if (place === "") return;
+  // Filter-knappar
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentFilter = btn.dataset.filter;
+      renderTasks();
+    });
+  });
 
-    const newTip = {
-      place: place,
-      comment: comment
+  function addTask() {
+    const taskText = taskInput.value.trim();
+    if (taskText === "") return;
+
+    const newTask = {
+      text: taskText,
+      completed: false
     };
 
-    tips.push(newTip);
-    saveTips();
-    renderTips();
+    tasks.push(newTask);
+    saveTasks();
+    renderTasks();
 
-    placeInput.value = "";
-    commentInput.value = "";
-    placeInput.focus();
+    taskInput.value = "";
+    taskInput.focus();
   }
 
-  function renderTips() {
-    tipList.innerHTML = "";
-    tips.forEach((tip, index) => {
+  function renderTasks() {
+    taskList.innerHTML = "";
+
+    let filteredTasks = tasks;
+    if (currentFilter === "active") {
+      filteredTasks = tasks.filter(t => !t.completed);
+    } else if (currentFilter === "completed") {
+      filteredTasks = tasks.filter(t => t.completed);
+    }
+
+    filteredTasks.forEach((task, index) => {
       const li = document.createElement("li");
+      if (task.completed) li.classList.add("completed");
 
-      const content = document.createElement("div");
-      content.classList.add("tip-content");
-      content.innerHTML = `<strong>${tip.place}</strong><br><small>${tip.comment || ""}</small>`;
+      // Vänster sida: checkbox + text
+      const left = document.createElement("div");
+      left.classList.add("task-left");
 
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+      checkbox.addEventListener("change", () => {
+        task.completed = checkbox.checked;
+        saveTasks();
+        renderTasks();
+      });
+
+      const span = document.createElement("span");
+      span.textContent = task.text;
+
+      left.appendChild(checkbox);
+      left.appendChild(span);
+
+      // Ta bort-knapp
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "✖";
       deleteBtn.classList.add("delete");
       deleteBtn.addEventListener("click", () => {
-        tips.splice(index, 1);
-        saveTips();
-        renderTips();
+        const taskIndex = tasks.indexOf(task);
+        tasks.splice(taskIndex, 1);
+        saveTasks();
+        renderTasks();
       });
 
-      li.appendChild(content);
+      li.appendChild(left);
       li.appendChild(deleteBtn);
-      tipList.appendChild(li);
+      taskList.appendChild(li);
     });
   }
 
-  function saveTips() {
-    localStorage.setItem("tips", JSON.stringify(tips));
+  function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 });
