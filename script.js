@@ -1,98 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("addBtn");
-  const taskInput = document.getElementById("taskInput");
-  const taskList = document.getElementById("taskList");
-  const filterBtns = document.querySelectorAll(".filters button");
+  const placeInput = document.getElementById("placeInput");
+  const commentInput = document.getElementById("commentInput");
+  const tipList = document.getElementById("tipList");
 
-  // Ladda sparade uppgifter
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  let currentFilter = "all";
-  renderTasks();
+  // Ladda sparade tips
+  let tips = JSON.parse(localStorage.getItem("tips")) || [];
+  renderTips();
 
-  // Lägg till uppgift
-  addBtn.addEventListener("click", addTask);
-  taskInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") addTask();
+  // Lägg till tips
+  addBtn.addEventListener("click", addTip);
+  commentInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") addTip();
   });
 
-  // Filter-knappar
-  filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentFilter = btn.dataset.filter;
-      renderTasks();
-    });
-  });
+  function addTip() {
+    const place = placeInput.value.trim();
+    const comment = commentInput.value.trim();
+    if (place === "") return;
 
-  function addTask() {
-    const taskText = taskInput.value.trim();
-    if (taskText === "") return;
-
-    const newTask = {
-      text: taskText,
-      completed: false
+    const newTip = {
+      place: place,
+      comment: comment
     };
 
-    tasks.push(newTask);
-    saveTasks();
-    renderTasks();
+    tips.push(newTip);
+    saveTips();
+    renderTips();
 
-    taskInput.value = "";
-    taskInput.focus();
+    placeInput.value = "";
+    commentInput.value = "";
+    placeInput.focus();
   }
 
-  function renderTasks() {
-    taskList.innerHTML = "";
-
-    let filteredTasks = tasks;
-    if (currentFilter === "active") {
-      filteredTasks = tasks.filter(t => !t.completed);
-    } else if (currentFilter === "completed") {
-      filteredTasks = tasks.filter(t => t.completed);
-    }
-
-    filteredTasks.forEach((task, index) => {
+  function renderTips() {
+    tipList.innerHTML = "";
+    tips.forEach((tip, index) => {
       const li = document.createElement("li");
-      if (task.completed) li.classList.add("completed");
 
-      // Vänster sida: checkbox + text
-      const left = document.createElement("div");
-      left.classList.add("task-left");
+      const content = document.createElement("div");
+      content.classList.add("tip-content");
+      content.innerHTML = `<strong>${tip.place}</strong><br><small>${tip.comment || ""}</small>`;
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = task.completed;
-      checkbox.addEventListener("change", () => {
-        task.completed = checkbox.checked;
-        saveTasks();
-        renderTasks();
-      });
-
-      const span = document.createElement("span");
-      span.textContent = task.text;
-
-      left.appendChild(checkbox);
-      left.appendChild(span);
-
-      // Ta bort-knapp
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "✖";
       deleteBtn.classList.add("delete");
       deleteBtn.addEventListener("click", () => {
-        const taskIndex = tasks.indexOf(task);
-        tasks.splice(taskIndex, 1);
-        saveTasks();
-        renderTasks();
+        tips.splice(index, 1);
+        saveTips();
+        renderTips();
       });
 
-      li.appendChild(left);
+      li.appendChild(content);
       li.appendChild(deleteBtn);
-      taskList.appendChild(li);
+      tipList.appendChild(li);
     });
   }
 
-  function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+  function saveTips() {
+    localStorage.setItem("tips", JSON.stringify(tips));
   }
 });
