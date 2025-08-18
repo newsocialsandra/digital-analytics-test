@@ -13,7 +13,7 @@ body {
   padding: 20px 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 350px;
+  width: 400px;
 }
 
 h1 {
@@ -56,16 +56,22 @@ ul {
 li {
   background: #f9f9f9;
   margin-bottom: 10px;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-li.completed {
+li.completed span {
   text-decoration: line-through;
   color: gray;
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 button.delete {
