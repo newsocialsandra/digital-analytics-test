@@ -1,52 +1,79 @@
+/* Bakgrund med gradient och lite lekfull känsla */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f7fa;
+  font-family: 'Comic Sans MS', 'Comic Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  min-height: 100vh;
   margin: 0;
+  padding: 30px;
 }
 
+/* Container som ett färgglatt kort */
 .container {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 400px;
+  background: #fff6f0;
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  width: 420px;
+  animation: popIn 0.6s ease;
 }
 
+/* Titel med emoji och kul typsnitt */
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-size: 2em;
+  color: #ff6f61;
 }
 
+/* Liten motivations-text */
+p {
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* Input-område med rundade hörn */
 .input-area {
   display: flex;
   gap: 10px;
+  margin-bottom: 15px;
 }
 
 #taskInput {
   flex: 1;
-  padding: 10px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 12px;
+  border: 2px solid #ffb6b9;
+  border-radius: 30px;
+  font-size: 1em;
+  outline: none;
 }
 
+#taskInput:focus {
+  border-color: #ff6f61;
+}
+
+/* Lägg till-knappen färgglad och rundad */
 #addBtn {
-  padding: 10px 15px;
+  padding: 12px 18px;
   border: none;
-  background: #4CAF50;
+  background: #ff6f61;
   color: white;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 30px;
   cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
 }
 
 #addBtn:hover {
-  background: #45a049;
+  background: #ff856f;
+  transform: scale(1.05);
 }
 
+/* Filter-knappar med pill-stil */
 .filters {
   display: flex;
   justify-content: center;
@@ -56,53 +83,89 @@ h1 {
 
 .filters button {
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
   cursor: pointer;
-  background: #eee;
+  background: #ffd3b6;
+  font-size: 0.9em;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.filters button:hover {
+  transform: scale(1.1);
 }
 
 .filters button.active {
-  background: #4CAF50;
+  background: #ff6f61;
   color: white;
+  font-weight: bold;
 }
 
+/* Lista */
 ul {
   list-style: none;
   padding: 0;
   margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 li {
-  background: #f9f9f9;
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  border-radius: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s, background 0.3s;
 }
 
+li:hover {
+  transform: translateX(5px);
+  background: #fff0f0;
+}
+
+/* När uppgift är klar */
 li.completed span {
   text-decoration: line-through;
   color: gray;
 }
 
+/* Vänstersida med checkbox + text */
 .task-left {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 1.05em;
 }
 
+.task-left input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff6f61; /* Färgad checkbox (stödjs i moderna browsers) */
+}
+
+/* Ta bort-knapp */
 button.delete {
-  background: crimson;
+  background: #ff4b5c;
   border: none;
   color: white;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 0.9em;
+  transition: transform 0.2s, background 0.2s;
 }
 
 button.delete:hover {
-  background: darkred;
+  background: #d62839;
+  transform: rotate(10deg) scale(1.1);
+}
+
+/* Liten pop-in animation */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
