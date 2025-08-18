@@ -1,6 +1,6 @@
 /* Bakgrund med gradient och lite lekfull känsla */
 body {
-  font-family: 'Comic Sans MS', 'Comic Neue', Arial, sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ffecd2, #fcb69f);
   display: flex;
   justify-content: center;
